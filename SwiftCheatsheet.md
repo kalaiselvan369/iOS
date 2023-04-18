@@ -17,12 +17,36 @@ print("Hello World")
  */
 ```
 
-## String Interpolation
-
+## Print Statements
 
 ```swift
-// string interpolation
+print("Hello World")
+print(2==3) // output is false
+print(2+3)  // output is 5
+```
 
+## String
+
+```swift
+var floatValue = 2.45343
+var roundOffToTwoDecimal = String(format: "%.2f", floatValue)
+print(floatValue) // prints 2.45
+```
+
+## String Concatenation
+
+```swift
+
+var alphabets = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l"]
+
+var password: String = alphabets[3] + alphabets[5] + alphabets[1] + alphabets[8]
+
+print(password)
+```
+
+## String Interpolation
+
+```swift
 print("Add 2+3 = \(2+3)")
 
 print("Multiply 11*5 = \(2+3)\(2+3)")
@@ -62,7 +86,6 @@ print(b)
 
 ## Constant
 
-
 ```swift
 
 let pi = 3.14
@@ -76,7 +99,6 @@ let pi = 3.14
 ```
 
 ## Range
-
 
 ```swift
 
@@ -93,7 +115,6 @@ print(openRange)
 
 ## Randomization
 
-
 ```swift
 
 var random = Int.random(in: 1...10)
@@ -108,7 +129,6 @@ print(randomFromArray.randomElement() ?? "a")
 ```
 
 ## Operators
-
 
 ```swift
 
@@ -134,6 +154,10 @@ print(sum)
 
 ## Data type
 
+1. Int refers to Integer which is a whole number.
+2. Float refers to Floating point number which can have decimal place.
+3. Double refers to decimal number with double the amount of accuracy then floating point number.
+4. Bool refers to boolean which has only two values true or false
 
 ```swift
 
@@ -150,14 +174,16 @@ var doublePrecision: Double = 1.35253
 var flag: Bool = false
 ```
 
-## Concatenation
-
+## Function
 
 ```swift
-
-var alphabets = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l"]
-
-var password: String = alphabets[3] + alphabets[5] + alphabets[1] + alphabets[8]
-
-print(password)
+func greeting1(greet: String) {
+    print(greet)
+    func greeting2(salute: String){
+        print(salute)
+    }
+    greeting2(salute: "mr.")
+}
+// function can be called as
+greeting1(greet: "hello")
 ```
