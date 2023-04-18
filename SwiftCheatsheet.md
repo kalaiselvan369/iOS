@@ -88,6 +88,16 @@ for n in numbers {
 }
 ```
 
+### 2D Array
+
+```swift
+let twoDArray = [
+    [1, 2, 3],  // 0
+    [1, 2, 3],  // 1
+    [1, 2, 3]   // 2
+] // 0  1  2
+```
+
 ## Variable
 
 ```swift
@@ -454,14 +464,15 @@ print(myOptional?.getText()) // here ?. is optional chaining and it saves us fro
 
 Strucutre helps to create custom data type
 
-1. Variables declared inside struct is called property --- indicates the color or what it is like
-2. functions declared inside struct is called method  -- indicate actions or what it can do
+1. Variables declared inside struct is called **property** --- indicates the color or what it is like
+2. functions declared inside struct is called **method**  -- indicate actions or what it can do
 3. We can also use init() inside the struct to initialize the property
 4. init() can have arugments that initialize the property
 5. `self` keyword is similar to `this` keyword in kotlin
 6. By default property and method in `struct` are immutable
 
 ```swift
+
 struct User {
     
     var name: String  // var inside struct is called as property
@@ -469,7 +480,7 @@ struct User {
     var followers: Int
     var isActive: Bool
     
-    init(name: String, email: String, followers: Int, isActive: Bool) {
+    init(n name: String, e email: String, f followers: Int, a isActive: Bool) {
         self.name = name
         self.email = email
         self.followers = followers
@@ -484,10 +495,26 @@ struct User {
             print("\(name) has left earth")
         }
     }
+    
+    mutating func newFollowers(_ followers: Int) {
+        self.followers = followers
+    }
 }
+
+var user = User(n: "Dhoni", e: "msd@cricket.com", f: 1000, a: true)
+print(user)
+user.followers = 2000 // no issue mutation available from outside
+print(user)
+user.newFollowers(3000) // mutating keyword to be added to that function
+print(user)
+
+let kholi = User(n: "Kholi", e: "virat@cricket.com", f: 1000, a: true)
+kholi.followers = 2000 // Error: not possible since let is constant
+
+
 ```
 
-> Mutating a property inside `struct` is possible only by declaring `mutating` keyword 
+> Mutating a property inside `struct` is possible only by declaring **mutating** keyword 
 
 ### Immutability 
 
