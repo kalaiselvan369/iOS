@@ -6,7 +6,7 @@ For example iPhone 2G and 3G has 320 x 480 points and rendered at 1x -> 320x480 
 can accomodate one pixel.
 
 Likewise, iPhone 4 and 4s has 320 x 480 points and rendered at 2x -> 640 x 960 pixels. This means each point 
-can accomodate two pixels.
+can accomodate four pixels.
 
 ## Auto layout tools
 
@@ -46,6 +46,26 @@ Arrange view in horizontal stack or vertical stack
 Every time you do the above step on the same button it will add different constraints like
 equal to, less than or equal to, greater than of equal to.
 
+## Content Hugging and Content Compression Resistance Priority
+
+Hugging - Content does not want to grow
+Compression Resistance - Content does not want to shrink
+
+Intrinsic Content Size - How much space(width and/or height) is needed to show a full content.
+
+Pretty self-explanatory, but views with variable content are aware of how big their content is and describe 
+their content's size through this property. Some obvious examples of views that have intrinsic content sizes 
+are UIImageViews, UILabels, UIButtons.
+
+Content Hugging Priority - The higher this priority is, the more a view resists growing larger than its intrinsic content size.
+
+Content Compression Resistance Priority - The higher this priority is, the more a view resists shrinking smaller than its intrinsic content size.
+
+## Inequalities
+
+1. Less than or equal to 
+2. Greater than or equal to
+3. Equal to 
 
 ## Creating custom view controller that load view without story board
 
@@ -61,16 +81,38 @@ To call one view controller(in our case it is custom view controller) from anoth
 
 ## Custom View Controller
 
-Custom view controller doesn't use the views declared in the story board. Instead it create its own
-view programmaticaly. Like android custom view which draw on x,y coordinates.
-
-
-![image](../assets/customviewcontroller.png)
-
-The above image shows difference between the story board and custom view controllers. Use either story board and create outlets
-or create views programmatically in the view controller class.
+Custom view controller doesn't use the views declared in the story board. Instead it create its ownview programmaticaly. Like android custom view which draw on x,y coordinates.
+Use either story board and create outlets or create views programmatically in the view controller class.
 
 > Creating custom views and custom view controllers are tedious process
+
+## Support Dark mode
+
+1. By default, if use system colors for the labels, images, etc., the os will set the adaptive color when we switch to light or dark mode
+2. If we need custom color in lables, or in other assets then in Assets.xcassets folder, we have to specify that custom color along with light mode and dark mode colors so that when user to switch dark mode we have seemless UI/UX.
+3. Using scalar assets like PNG, JPEG is not much effective since when we zoom the picture gets blurred.
+4. Using vector assets is an advantage because even when we zoom we won't loose clarity
+5. We can use image.pdf as a vector assets also. 
+6. In order to use vectors(.pdf in assets) set scale to `Single Scale`, enable `Preserve Vector Data`, appearances `Any, Light, Dark`
+
+### Dark mode usage
+
+Let's say that color of the text should be changed based on light and dark mode. If we choose
+system color for the lable, button background, etc., the color get's changed automatically for light and dark theme. 
+
+What if we have chosen custom color? In that case we have to manually set colors for dark and
+light theme. We use color asset to define that.
+
+In Assets file we have to create new color asset under AppIcon. 
+
+In right side tab under Appearances, we have to chose Any Light and Dark. 
+We can also name the Color set as well. 
+
+Now we can use this color for any UILable or Button Text colors.
+
+Similarly we can choose light and dark theme background images as well.
+
+In ride side tab, under scales we have to select Single Scale which will eliminate for 1x, 2x and 3x and keep only one resolution. This is applicable only for PDF background.
 
 ## Cocopod touch class & Tag the ViewController to Story board
 
@@ -106,24 +148,12 @@ override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 }
 ```
 
-## Support Dark mode
-
-1. By default, if use system colors for the labels, images, etc., the os will set the adaptive color when we
-   switch to light or dark mode
-2. If we need custom color in lables, or in other assets then in Assets.xcassets folder, we have to specify that
-   custom color along with light mode and dark mode colors so that when user to switch dark mode we have seemless UI/UX.
-3. Using scalar assets like PNG, JPEG is not much effective since when we zoom the picture gets blurred.
-4. Using vector assets is an advantage because even when we zoom we won't loose clarity
-5. We can use image.pdf as a vector assets also. 
-6. In order to use vectors(.pdf in assets) set scale to `Single Scale`, enable `Preserve Vector Data`, appearances `Any, Light, Dark`
-
-
 ## UITextFieldDelegate
 
 ```swift
 import UIKit
 
-class WeatherViewController: UIViewController, UITextFieldDelegate {
+class WeatherViewController: UIViewController, **UITextFieldDelegate** {
 
     @IBOutlet weak var conditionImageView: UIImageView!
     @IBOutlet weak var temperatureLabel: UILabel!
@@ -173,7 +203,6 @@ class WeatherViewController: UIViewController, UITextFieldDelegate {
 }
 
 ```
-
 ## Execute Code in UI Thread / Main Thread
 
 ```swift
@@ -286,12 +315,12 @@ Also in view controller we have set the delegate as
 
 1. To access core location we have to import core location module
 2. Instantiate core location manager
-3. set the location manager delegate
-4. use core location manager object to request permission
-5. Update the plist with all the location privay related key and value
-6. use core location manager to request one time location update
-7. once one time location is received, **stop location update**
-8. we need one more one time location update then request location again.
+3. Use core location manager object to request permission
+4. Update the plist with all the location privay related key and value
+5. Set the location manager delegate
+6. Use core location manager to request one time location update
+7. Once one time location is received, **stop location update**
+8. If we need one more one time location update then request location again.
 
 ## Navigation Controller
 

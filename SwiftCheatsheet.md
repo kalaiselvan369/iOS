@@ -365,7 +365,7 @@ The data could be present with specific data type or Nil
 ```swift
 var hardness: String? = nil
 
-// Here ? is indicating Nil
+// Here optional(?) is indicating that variable hardness can take `nil` value also
 ```
 
 ### Force unwrapping
@@ -404,7 +404,7 @@ if myOptionalString != nil {
 
 So, how to improve the code relability and concise by avoiding `nil` check
 
-### Safe optional
+### Optional binding
 
 ```swift
 var myOptionalString1: String? = "hello"
@@ -510,7 +510,6 @@ print(user)
 
 let kholi = User(n: "Kholi", e: "virat@cricket.com", f: 1000, a: true)
 kholi.followers = 2000 // Error: not possible since let is constant
-
 
 ```
 
@@ -646,7 +645,7 @@ class Dragon: Enemy {
 // split fire
 ```
 
-> Most basic class is swift is `NSObject`  and NS means Next Step
+> Most basic class is swift is `NSObject` and NS means Next Step
 
 Example of inheritance: UIButton -> UIControl -> UIView -> UIResponder -> NSObject
 
@@ -654,7 +653,7 @@ Example of inheritance: UIButton -> UIControl -> UIView -> UIResponder -> NSObje
 
 1. `struct` cannot inherit whereas `class` can
 2. `struct` cannot mutate property by default whereas `class` can mutate property
-3. `struct` are passed by value whereas `class` are operated by reference
+3. `struct` are pass by value whereas `class` are pass by reference
 
 #### Nice example for Pass by value and Pass by reference
 
@@ -676,7 +675,7 @@ class Enemy {
     }
     
     // here we are changing the property of health but didn't explicitly added mutating annotation
-    func takeDamager() {
+    func takeDamage() {
         health -= 10 // mutating property
     }
     
@@ -689,7 +688,7 @@ class Enemy {
     }
     
 ```
-#### Classes operate by OBJ Reference
+#### Classes operate by Object Reference
 
 **Remember: 2** 
 
@@ -699,12 +698,13 @@ let enemy2 = enemy1  // this line is creating a reference for enemy1 and assign 
 
 enemy1.move()
 enemy1.attack()
-enemy1.takeDamager() // this func reduce health by 90
+enemy1.takeDamage() // this func reduce health by 90
+// also notice that enemy1 is declared using let keyword and still we were able to mutate
 
 // do you think enemy2 health would have reduced to 90
 print(enemy2.health)
 
-// YESSS: Because classes operate of object reference
+// YES YES: Because classes operate of object reference
 
 ```
 
@@ -764,8 +764,9 @@ protocol CanFly {
 }
 
 // reason to adapt protocol is All birds cannot fly. Example Penguin is a bird that cannot fly.
-// therefore we cannot add fly function in the Bird(base) class. If we inherit bird class to eagle,
-// penguin each subclass will inherit those characteristics also. But the problem is does Penguin fly?? No..
+// therefore we cannot add fly function in the Bird(base) class. 
+// If we inherit bird class to eagle, penguin each subclass will inherit those 
+// characteristics also. But the problem is does Penguin fly?? Answer is   No..
 
 // hence by defining the protocol we will add fly function only to the respective classes which has fly capability.
 
@@ -823,8 +824,6 @@ class Aeroplane: CanFly {
 
 
 ### Delegate things using protocol
-
-![image](../assets/delegate.png)
 
 ```swift
 import Foundation
@@ -887,11 +886,16 @@ class EmergencyLineHandler {
         delegate?.performCPR()
     }
 }
+
+let emilio =  EmergencyLineHandler()
+let pete = Paramedic(emeHandler: emilio)
+emilio.assesSituation()
+emilio.medicalEmergency() // this function will delegate to paramedic
 ```
 
 ### Closures - Anonymous functions
 
-1. We can passing function to another function
+1. We can pass function to another function
 2. We can return function from another function
 
 ```swift
@@ -917,38 +921,32 @@ var result0 = calculate(n1: 2, n2: 3, operation: { (n1: Int, n2: Int) -> Int in
 })
 print(result0)
 
-// simplification of anonymous function - 1 (argument data type is infered)
+// simplifying closure - 1 (argument data type is infered hence we don't need to declare it)
 var result1 = calculate(n1: 2, n2: 3, operation: { (n1, n2) -> Int in
     return n1 + n2
 })
 print(result1)
 
-// simplification of anonymous function - 2 (return type is infered)
+// simplification closure - 2 (return type is infered hence we don't need to declare it)
 var result2 = calculate(n1: 2, n2: 3, operation: { (n1, n2) in
     return n1 + n2
 })
 print(result2)
 
-// simplification of anonymous function - 3 (return type is infered)
+// simplification of closure - 3 (we can even remove return keyword also)
 var result3 = calculate(n1: 2, n2: 3, operation: { (n1, n2) in
-    return n1 + n2
-})
-print(result3)
-
-// simplification of anonymous function - 4 return keyword not necessary
-var result4 = calculate(n1: 2, n2: 3, operation: {(n1, n2) in 
     n1 + n2
 })
-print(result4)
+print(result3) 
 
-// simplification of anonymous function - 5 parameter definition not necessary
+// simplification of closure - 4 parameter definition not necessary
 // n1 --> $0 , n2 --> $1, .... --> $n
 var result5 = calculate(n1: 2, n2: 3, operation: {
     $0 + $1
 })
 print(result5)
 
-// simplification of anonymous function - 6 parameter label not necessary if closure is the last param
+// simplification of closure - 5 parameter label not necessary if closure is the last param
 var result6 = calculate(n1: 2, n2: 3) {
     $0 + $1
 }
@@ -970,7 +968,33 @@ let arrayResult1 = array1.map {$0 + 1}
 print(arrayResult1)
 ```
 
-#### Computed Property
+## Networking
+
+1. Create URL
+2. Create URL Session
+3. Assing URL session a task
+4. Start the task
+
+```swift
+
+        //1. create url
+        if let url = URL(string: getUrl()) {
+            //2. create url session
+            let session = URLSession(configuration: .default)
+            //3. assign url session a task
+            let task = session.dataTask(with: url) { data, response, error in
+                if let error = error {
+                    print(error)
+                } else if let data = data {
+                    self.parseData(data: data)
+                }
+            }
+            //4. start task
+            task.resume()
+        }
+```
+
+## Computed Property
 
 ```swift
 var temperatureInCelcius : String {
@@ -979,7 +1003,7 @@ var temperatureInCelcius : String {
 }
 ```
 
-### Type alias
+## Type alias
 
 ```swift
 typealias Codable = Decodable & Encodable
@@ -987,10 +1011,9 @@ typealias Codable = Decodable & Encodable
 
 We can mark the response schema `struct` as codeable which will allow us to serialize and deserialize JSON.
 
-### Extension
+## Extension
 
-
-#### Extension functions 
+### Extension functions 
 
 ```swift
 extension Double {
@@ -1008,7 +1031,7 @@ var number = 3.14578
 var result = number.round(to: 2)
 ```
 
-#### Extension Protocol
+### Extension Protocol
 
 ```swift
 import Foundation
@@ -1025,9 +1048,9 @@ extension CanFly {
     }
 }
 
-// reason to adapte protocol is All birds cannot fly. Example Penguin is bird that cannot fly.
-// therefore we cannot add fly function in the Bird class. If we do say all the birds like eage,
-// penguin which are inheriting from the bird class will inherit those characteristics also.
+// reason to adapt protocol is All birds cannot fly. Example Penguin is bird that cannot fly.
+// therefore we cannot add fly function in the Bird class. If we do say all the birds like 
+// eagle, penguin which are inheriting from the bird class will inherit those characteristics also.
 
 // hence by defining the protocol we will add fly function only to the respective classes
 
@@ -1067,7 +1090,8 @@ class Penguin: Bird {
 class Aeroplane: CanFly {
     
     // although aeroplane can fly, it is not a bird
-    // also thing to note we didn't add the fly function from the protocol because we added extension protocol
+    // also thing to note we didn't add the fly function from the protocol
+    // because we added extension protocol
     // and in the extension protocol we have implemented the function
 }
 
@@ -1080,7 +1104,7 @@ aeroplane.fly() // we are able to call this because of our extension protocol
 3. Unlike normal protocol, extension protocol can have functions with implementation in it.
 
 
-### Sections 
+## Sections 
 
 If we have to separate file with different sections then we can do as 
 
@@ -1089,10 +1113,11 @@ If we have to separate file with different sections then we can do as
 ```
 
 
-### Code Snippet (live templates)
+## Code Snippet (live templates)
 
 1. To create code snippet, highlight the block and right click and create code snipped
-2. In snippet block add the below line
+2. Give a title and description
+3. In snippet block add the below line
 
 ```swift
 //MARK: - <#Section name#>
@@ -1101,7 +1126,7 @@ If we have to separate file with different sections then we can do as
 Also ensure you will need to add `keyword` in completion field
 
 
-### Casting
+## Casting
 
 #### `is` , `as!` , `as`, `as?`
 
@@ -1155,7 +1180,7 @@ for item in items {
 ```
 
 
-#### Any
+## Any
 
 All the objects
 
@@ -1173,7 +1198,7 @@ var string: String = "hello"
 var items: [Any] = [john, nemo, pichai, number]
 ```
 
-#### AnyObject
+## AnyObject
 
 All the objects that are derived from class
 
@@ -1193,7 +1218,7 @@ var items: [AnyObject] = [john, nemo, pichai]
 var items: [AnyObject] = [john, nemo, pichai, number]
 ```
 
-#### NSObject
+## NSObject
 
 Class that extends NSObject can only be grouped as any array like above.
 
@@ -1205,7 +1230,7 @@ var string: NSString = ""
 var items: [NSObject] = [number, string]
 ```
 
-#### User Defaults
+## User Defaults
 
 User defaults is like shared preference in android. We should only store for limited data in that. It is **not** like db.
 
@@ -1241,7 +1266,7 @@ if let arrays = defaults.object(forKey: "Arrays") {
 }
 ```
 
-### Mutating
+## Mutating
 
 ```swift
 class Car {
@@ -1280,7 +1305,7 @@ bike.color = "brown"
 print(bike)
 ```
 
-### Singleton
+## Singleton
 
 We have only one object reference to that particular class.
 
@@ -1300,7 +1325,7 @@ print(car1.color) // prints green
 print(car2.color) // prints green
 ```
 
-### Ternary Operator
+## Ternary Operator
 
 ```swift
 // finalResult = condition ? result : result
@@ -1320,7 +1345,7 @@ if items[indexPath.row].done {
 items[indexPath.row].done = !items[indexPath.row].done
 ```
 
-### Codable - Encoding and Decoding data in custom .plist file
+## Codable - Encoding and Decoding data in custom .plist file
 
 Encoding -> converting from one data type to another
 Decoding -> decode from one type to another
@@ -1358,11 +1383,11 @@ func saveItems() {
 }
 ```
 
-### Keychain
+## Keychain
 
 To store very minimal sized data securely
 
-### SQLite - Relational data
+## SQLite - Relational data
 
 Lite weight, easy to user relational database and query large amount of data in ease.
 
@@ -1488,7 +1513,7 @@ class TodoListViewController: UITableViewController {
 
 ```
 
-### Finding Path to Custom plist and Data source model
+## Finding Path to Custom plist and Data source model
 
 Use the below function to know the path when the app is running in simulator
 
