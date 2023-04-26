@@ -128,7 +128,7 @@ and `segue` to create a navigation link from one view controller to another view
 2. Once you define the segue, set the identifier for the segue
 3. make use of the identifier key to navigate from one view controller to another
 
-> Note: While adding identified in the segue, to the below don't add the class linker. Just leave it empty
+> Note: While adding identifier in the segue, to the below don't add the class linker. Just leave it empty
 
 We can use **Present Modally** in Seque options for now.
 
@@ -147,6 +147,13 @@ override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
     }
 }
 ```
+
+Segues are of two types:
+
+ 1. With identifier  (Link to two view controllers by CTRL+Drag to another view controller)
+ 2. Without identifier(Link Button from one screen to another view controller by CTRL+Drag)
+
+ We can create segue without an indentifier by directly linking the button to the destination screen.
 
 ## UITextFieldDelegate
 
@@ -430,8 +437,8 @@ Since we are having custom message cell & message storyboard(.xib), we have to r
 
 ```swift
  tableView.register(
-            UINib.init(nibName: "MessageCell", bundle: nil),
-            forCellReuseIdentifier: Constant.CELL_IDENTIFIER_CHAT_ITEM
+    UINib.init(nibName: "MessageCell", bundle: nil),
+    forCellReuseIdentifier: Constant.CELL_IDENTIFIER_CHAT_ITEM
 )
 ```
 

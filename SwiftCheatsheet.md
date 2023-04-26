@@ -992,6 +992,16 @@ print(arrayResult1)
             //4. start task
             task.resume()
         }
+
+        private func parseData(data: Data) -> Post? {
+            do {
+                let parsedData = try JSONDecoder().decode(Post.self, from: data)
+                return parsedData
+            } catch {
+                print(error)
+                return nil
+            }
+        }
 ```
 
 ## Computed Property
@@ -1123,7 +1133,24 @@ If we have to separate file with different sections then we can do as
 //MARK: - <#Section name#>
 ```
 
-Also ensure you will need to add `keyword` in completion field
+Also ensure you will need to add `keyword` in completion 
+
+## Type Property
+
+```swift
+
+    struct Constants {
+        let a = 1000
+        static let b = 2000 // type property
+
+        static instanceMethod() {
+
+        } // type method
+    }
+
+    // we need to create an object to access a but we can call b directly using 
+    // the class name without having to initialize
+```
 
 
 ## Casting
@@ -1153,26 +1180,34 @@ class Human: Animal {
 
 var john = Human.init(name: "John")
 var nemo = Fish.init(name: "Nemo")
+var shark = Fish.init(name: "Shark")
 var pichai = Human.init(name: "Pichai")
 
-var items = [john, nemo, pichai]
+var items: [Animal] = [john, nemo, shark, pichai]
+
+var items2: [Animal] = [john, pichai, nemo, shark]
 
 // usage of is
 for item in items {
     if item is Fish {
-        print("fishy")
-        let fish = item as 
         // unless we force downcast `as!` we cannot use method of Fish class
         let fish: Fish = item as! Fish
         print(fish.action())
-        // usage of upcasting - most least used
-        let animal: Animal = item as Animal
-        animal.callMe()
     }
+}
 
-    // usage of safe casting
+for item in items2 {
+    if item is Human {
+        // upcasting human to animal
+        let human = item as Animal
+        print(human.name)
+    }
+}
+
+for item in items2 {
      if item is Human {
         var human: Animal? = item
+         // usage of safe casting
         let john = human as? Human
         john?.action()
     }
@@ -1182,7 +1217,7 @@ for item in items {
 
 ## Any
 
-All the objects
+All the objects that are struct, classes, etc.
 
 ```swift
 
@@ -1193,14 +1228,12 @@ var pichai = Human.init(name: "Pichai")
 var number: Int = 12
 var string: String = "hello"
 
-// we cannot add number to the list because number is of Integer type
-// and it is a struct
 var items: [Any] = [john, nemo, pichai, number]
 ```
 
 ## AnyObject
 
-All the objects that are derived from class
+All the objects that are derived from **class** only
 
 ```swift
 var john = Human.init(name: "John")
@@ -1208,19 +1241,17 @@ var nemo = Fish.init(name: "Nemo")
 var pichai = Human.init(name: "Pichai")
 
 var number: Int = 12
-var string: String = "hello"
+var text: String = "hello"
 
-// we cannot add number to the list because number is of Integer type
-// and it is a struct
-var items: [AnyObject] = [john, nemo, pichai]
-
-// cannot do this -- because number is of type Int and it is a struct
-var items: [AnyObject] = [john, nemo, pichai, number]
+// cannot do this -- because number & string is a struct
+var items: [AnyObject] = [john, nemo, pichai, number, text] //error
 ```
 
 ## NSObject
 
 Class that extends NSObject can only be grouped as any array like above.
+
+** Note that number and string are of NS object type **
 
 ```swift
 
@@ -1393,7 +1424,7 @@ Lite weight, easy to user relational database and query large amount of data in 
 
 ### Core Data
 
-In fact, if you’ve used Core Data before, you’ve already used SQLite. 
+In fact, if you’ve used Core Data before, then you’ve already used SQLite. 
 Core Data is just a layer on top of SQLite that provides a more convenient API.
 
 
